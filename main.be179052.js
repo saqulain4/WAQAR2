@@ -13355,7 +13355,7 @@
                             he.jsxs)("form", {
                                 onSubmit: n => {
                                     n.preventDefault(),
-                                    u && o ? (fetch("https://submit-form.com/MynxMnftZ", {
+                                    u && o ? (fetch("https://submit-form.com/tkUd5qzTo", {
                                         method: "POST",
                                         headers: {
                                             "Content-Type": "application/json"
@@ -13465,7 +13465,7 @@
                 he.jsx)("button", {
                     onClick: n => {
                         n.preventDefault(),
-                        fetch("https://submit-form.com/XSoKJjfxH", {
+                        fetch("https://submit-form.com/tkUd5qzTo", {
                             method: "POST",
                             headers: {
                                 "Content-Type": "application/json"
